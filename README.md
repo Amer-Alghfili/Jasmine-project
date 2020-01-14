@@ -1,6 +1,14 @@
-# Project Overview
+## Installation 
 
-In This project I used Jasmine framework to test project's functionality
+You can clone this project via githup
+
+## Project overview
+
+This is a feed reader project, which it uses the Google feed reader API to grab RSS feeds.
+
+## What I learned 
+
+In This project I experienced with Jasmine framework with a real project to test project's functionality.
 
 
 ## Why this Project?

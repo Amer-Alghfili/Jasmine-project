@@ -34,6 +34,7 @@ $(
       it("url is defined", function() {
         for (let feed of allFeeds) {
           expect(feed.url).toBeDefined();
+          expect(feed.url).not.toBe('');
         }
       });
 
@@ -44,6 +45,7 @@ $(
       it("name is defined", function() {
         for (let feed of allFeeds) {
           expect(feed.name).toBeDefined();
+          expect(feed.name).not.toBe('');
         }
       });
     });
@@ -55,9 +57,9 @@ $(
        * the CSS to determine how we're performing the
        * hiding/showing of the menu element.
        */
-      it("menue element is hidden", function() {
-        const body = document.querySelector(".menu-hidden");
-        expect(body.className).toBe("menu-hidden");
+      it("menu element is hidden", function() {
+        const body = document.querySelector("body");
+        expect(body.classList.contains('menu-hidden')).toBe(true);
       });
 
       /* TODO: Write a test that ensures the menu changes
@@ -66,12 +68,12 @@ $(
        * clicked and does it hide when clicked again.
        */
       it("menu visibility is changed", function() {
-        const body = document.querySelector(".menu-hidden");
+        const body = document.querySelector("body");
         const menuIcon = document.querySelector(".menu-icon-link");
         menuIcon.click();
-        expect(body.className).toBe("");
+        expect(body.classList.contains('menu-hidden')).toBe(false);
         menuIcon.click();
-        expect(body.className).toBe("menu-hidden");
+        expect(body.classList.contains('menu-hidden')).toBe(true);
       });
     });
 
@@ -85,14 +87,12 @@ $(
        */
 
       beforeEach(function(done) {
-        loadFeed(0, function() {
-          done();
-        });
+        loadFeed(0, done);
       });
 
       it("feed container contains entry", function() {
-        const feedContainer = document.querySelector(".feed");
-        expect(feedContainer.firstElementChild.className).toBe("entry-link");
+        const feedContainer = document.querySelectorAll(".feed .entry-link");
+        expect(feedContainer.length).toBeGreaterThan(0);
       });
     });
 
@@ -102,14 +102,18 @@ $(
        * by the loadFeed function that the content actually changes.
        * Remember, loadFeed() is asynchronous.
        */
+      let feed1, feed2;
       beforeEach(function(done) {
         loadFeed(1, function() {
-          done();
+          feed1 = document.querySelectorAll('.feed .entry-link .entry h2');
+          loadFeed(2, done);
         });
       });
       it("content is changed after a feed is loaded", function() {
-        const headerText = document.querySelector(".header-title").textContent;
-        expect(headerText).toBe("CSS Tricks");
+        feed2 = document.querySelectorAll('.feed .entry-link .entry h2');
+        for(let i=0,j=0; i<feed1.length && j<feed2.length; i++, j++) {
+          expect(feed1[i].textContent).not.toBe(feed2[j].textContent);
+        }
       });
     });
   })()
